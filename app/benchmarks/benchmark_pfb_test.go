@@ -8,16 +8,18 @@ import (
 	"time"
 
 	"cosmossdk.io/log"
-	"github.com/celestiaorg/celestia-app/v6/app"
-	"github.com/celestiaorg/celestia-app/v6/app/encoding"
-	"github.com/celestiaorg/celestia-app/v6/pkg/user"
-	testutil "github.com/celestiaorg/celestia-app/v6/test/util"
-	"github.com/celestiaorg/celestia-app/v6/test/util/testfactory"
-	"github.com/celestiaorg/go-square/v2/share"
-	blobtx "github.com/celestiaorg/go-square/v2/tx"
 	"github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/stretchr/testify/require"
+
+	"github.com/celestiaorg/go-square/v2/share"
+	blobtx "github.com/celestiaorg/go-square/v2/tx"
+
+	"github.com/celestiaorg/celestia-app/v4/app"
+	"github.com/celestiaorg/celestia-app/v4/app/encoding"
+	"github.com/celestiaorg/celestia-app/v4/pkg/user"
+	testutil "github.com/celestiaorg/celestia-app/v4/test/util"
+	"github.com/celestiaorg/celestia-app/v4/test/util/testfactory"
 )
 
 func init() {
@@ -320,7 +322,7 @@ func benchmarkProcessProposalPFBHalfSecond(b *testing.B, count, size int) {
 		return
 	}
 
-	b.ReportMetric(bestTime.Seconds(), fmt.Sprintf("process_proposal_time(ms)"))
+	b.ReportMetric(float64(bestTime.Nanoseconds())/1e6, fmt.Sprintf("process_proposal_time(ms)"))
 	b.ReportMetric(float64(len(processProposalReq.Txs)), "num_txs")
 	b.ReportMetric(float64(size), "blob_size(bytes)")
 	b.ReportMetric(calculateBlockSizeInMb(processProposalReq.Txs), "block_size(mb)")
